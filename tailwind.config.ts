@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,16 +19,31 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
+			},
 			colors: {
+				primary: {
+					DEFAULT: '#2563EB', // Accent blue
+					foreground: '#ffffff'
+				},
+				success: {
+					DEFAULT: '#16A34A', // Green Up
+					foreground: '#ffffff'
+				},
+				danger: {
+					DEFAULT: '#DC2626', // Red Down
+					foreground: '#ffffff'
+				},
+				text: {
+					primary: '#111827', // Primary text
+					secondary: '#6B7280', // Secondary
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
-				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
-				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
