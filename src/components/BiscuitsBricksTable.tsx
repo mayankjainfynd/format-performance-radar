@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BiscuitsBricksTableProps {
   data: BiscuitsBricks[];
@@ -19,6 +19,74 @@ interface BiscuitsBricksTableProps {
 const BiscuitsBricksTable: React.FC<BiscuitsBricksTableProps> = ({ data }) => {
   const [sortColumn, setSortColumn] = React.useState<keyof BiscuitsBricks>("category_name");
   const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">("asc");
+
+  // Extended data for demonstration purposes
+  const extendedData = [
+    ...data,
+    {
+      category_name: "Snacks & Chips",
+      number_of_products: 1500,
+      total_sales: "₹12.53 Cr",
+      sales_quantity: "2.40 L",
+      margin: "13.22%",
+      sales_contribution: "13.22%",
+      margin_contribution: "13.22%"
+    },
+    {
+      category_name: "Fresh Produce",
+      number_of_products: 1000,
+      total_sales: "₹12.53 Cr",
+      sales_quantity: "2.40 L",
+      margin: "13.22%",
+      sales_contribution: "13.22%",
+      margin_contribution: "13.22%"
+    },
+    {
+      category_name: "Meat & Seafood",
+      number_of_products: 700,
+      total_sales: "₹12.53 Cr",
+      sales_quantity: "2.40 L",
+      margin: "13.22%",
+      sales_contribution: "13.22%",
+      margin_contribution: "13.22%"
+    },
+    {
+      category_name: "Bakery",
+      number_of_products: 600,
+      total_sales: "₹12.53 Cr",
+      sales_quantity: "3.00 L",
+      margin: "13.22%",
+      sales_contribution: "13.22%",
+      margin_contribution: "13.22%"
+    },
+    {
+      category_name: "Frozen Foods",
+      number_of_products: 900,
+      total_sales: "₹12.53 Cr",
+      sales_quantity: "3.00 L",
+      margin: "13.22%",
+      sales_contribution: "13.22%",
+      margin_contribution: "13.22%"
+    },
+    {
+      category_name: "Canned Goods",
+      number_of_products: 800,
+      total_sales: "₹12.53 Cr",
+      sales_quantity: "3.00 L",
+      margin: "13.22%",
+      sales_contribution: "13.22%",
+      margin_contribution: "13.22%"
+    },
+    {
+      category_name: "Condiments & Sauces",
+      number_of_products: 500,
+      total_sales: "₹12.53 Cr",
+      sales_quantity: "3.00 L",
+      margin: "13.22%",
+      sales_contribution: "13.22%",
+      margin_contribution: "13.22%"
+    }
+  ];
 
   const handleSort = (column: keyof BiscuitsBricks) => {
     if (column === sortColumn) {
@@ -30,7 +98,7 @@ const BiscuitsBricksTable: React.FC<BiscuitsBricksTableProps> = ({ data }) => {
   };
 
   const sortedData = React.useMemo(() => {
-    return [...data].sort((a, b) => {
+    return [...extendedData].sort((a, b) => {
       const valueA = a[sortColumn];
       const valueB = b[sortColumn];
 
@@ -60,17 +128,17 @@ const BiscuitsBricksTable: React.FC<BiscuitsBricksTableProps> = ({ data }) => {
         ? strA.localeCompare(strB)
         : strB.localeCompare(strA);
     });
-  }, [data, sortColumn, sortDirection]);
+  }, [extendedData, sortColumn, sortDirection]);
 
   return (
-    <Card className="shadow-sm mb-6 overflow-hidden">
+    <Card className="shadow-sm mb-6 overflow-hidden border rounded-lg">
       <div className="p-4 bg-white border-b">
-        <h2 className="text-lg font-semibold">Biscuits Bricks</h2>
+        <h2 className="text-lg">Biscuits Bricks</h2>
       </div>
-      <div className="overflow-x-auto bg-white rounded-xl p-4">
+      <div className="overflow-x-auto bg-white rounded-xl">
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="bg-gray-50 border-b border-t">
               <SortableHeader
                 column="category_name"
                 label="Category Name"
@@ -80,7 +148,7 @@ const BiscuitsBricksTable: React.FC<BiscuitsBricksTableProps> = ({ data }) => {
               />
               <SortableHeader
                 column="number_of_products"
-                label="Products"
+                label="Number of Products"
                 currentSort={sortColumn}
                 direction={sortDirection}
                 onSort={handleSort}
@@ -94,28 +162,28 @@ const BiscuitsBricksTable: React.FC<BiscuitsBricksTableProps> = ({ data }) => {
               />
               <SortableHeader
                 column="sales_quantity"
-                label="Sales Qty"
+                label="Sales Quantity"
                 currentSort={sortColumn}
                 direction={sortDirection}
                 onSort={handleSort}
               />
               <SortableHeader
                 column="margin"
-                label="Margin %"
+                label="Margin"
                 currentSort={sortColumn}
                 direction={sortDirection}
                 onSort={handleSort}
               />
               <SortableHeader
                 column="sales_contribution"
-                label="Sales Contrib."
+                label="Sales Contribution"
                 currentSort={sortColumn}
                 direction={sortDirection}
                 onSort={handleSort}
               />
               <SortableHeader
                 column="margin_contribution"
-                label="Margin Contrib."
+                label="Margin Contribution"
                 currentSort={sortColumn}
                 direction={sortDirection}
                 onSort={handleSort}
@@ -124,32 +192,37 @@ const BiscuitsBricksTable: React.FC<BiscuitsBricksTableProps> = ({ data }) => {
           </TableHeader>
           <TableBody>
             {sortedData.map((row, index) => (
-              <TableRow key={index} className="hover:bg-muted/50">
+              <TableRow key={index} className="hover:bg-gray-50 border-b">
                 <TableCell className="font-medium">{row.category_name}</TableCell>
                 <TableCell>{row.number_of_products}</TableCell>
                 <TableCell>{row.total_sales}</TableCell>
                 <TableCell>{row.sales_quantity}</TableCell>
                 <TableCell>{row.margin}</TableCell>
-                <TableCell>
-                  <div className="flex items-center">
-                    {row.sales_contribution}
-                    <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs">
-                      {row.sales_contribution}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center">
-                    {row.margin_contribution}
-                    <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">
-                      {row.margin_contribution}
-                    </span>
-                  </div>
-                </TableCell>
+                <TableCell>{row.sales_contribution}</TableCell>
+                <TableCell>{row.margin_contribution}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        <div className="flex justify-between items-center p-4 text-sm">
+          <div>Showing 11-20 of 150 results</div>
+          <div className="flex items-center gap-2">
+            <div>Rows per page</div>
+            <select className="border rounded px-2 py-1 text-sm">
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+            </select>
+            <div className="flex ml-4">
+              <button className="p-1 border rounded hover:bg-gray-100">
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button className="p-1 border rounded hover:bg-gray-100 ml-1">
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </Card>
   );
@@ -172,7 +245,7 @@ function SortableHeader<T>({
 }: SortableHeaderProps<T>) {
   return (
     <TableHead
-      className="cursor-pointer hover:bg-muted/50"
+      className="cursor-pointer hover:bg-gray-100 text-xs font-medium text-gray-500"
       onClick={() => onSort(column)}
     >
       <div className="flex items-center">

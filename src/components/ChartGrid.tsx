@@ -15,7 +15,7 @@ const ChartGrid: React.FC<ChartGridProps> = ({ charts }) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"} gap-6 mb-6`}>
+    <div className={`grid ${isMobile ? "grid-cols-1 gap-4" : "grid-cols-2 gap-6"} mb-6`}>
       <PurchaseVsSalesChart data={charts.purchase_vs_sales} />
       <TargetVsSalesChart data={charts.target_vs_sales} />
       <FormatWiseSalesChart data={charts.format_wise_sales} />

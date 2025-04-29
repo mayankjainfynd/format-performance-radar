@@ -4,6 +4,7 @@ import { KPIs } from "@/types/dashboard";
 import { TrendingUp, Store, ShoppingBag, Layers, ArrowDown, ArrowUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface KpiCardsProps {
   kpis: KPIs;
@@ -13,41 +14,36 @@ const KpiCards: React.FC<KpiCardsProps> = ({ kpis }) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className={`grid ${isMobile ? "grid-cols-1 gap-4" : "grid-cols-5 gap-6"} mb-6`}>
+    <div className={`grid ${isMobile ? "grid-cols-1 gap-4" : "grid-cols-5 gap-4"} mb-6`}>
       <KpiCard
         title="Total Sales"
         value={kpis.total_sales}
         icon={TrendingUp}
-        trend="up"
-        percentage="8.2%"
+        info="Total sales across all formats"
       />
       <KpiCard
         title="Sales Quantity"
         value={kpis.sales_quantity}
         icon={ShoppingBag}
-        trend="up"
-        percentage="5.1%"
+        info="Total quantity sold across all SKUs"
       />
       <KpiCard
-        title="Total Stores"
+        title="Total Store"
         value={kpis.total_store.toString()}
         icon={Store}
-        trend="up"
-        percentage="2.3%"
+        info="Total number of active stores"
       />
       <KpiCard
         title="On-Hand Inventory"
         value={kpis.on_hand_inventory}
         icon={Layers}
-        trend="down"
-        percentage="3.7%"
+        info="Current inventory at all locations"
       />
       <KpiCard
-        title="Turnover Ratio"
+        title="Turn Over Ratio"
         value={kpis.turnover_ratio}
         icon={TrendingUp}
-        trend="up"
-        percentage="4.5%"
+        info="Inventory turnover rate"
       />
     </div>
   );
@@ -57,33 +53,41 @@ interface KpiCardProps {
   title: string;
   value: string;
   icon: React.FC<{ className?: string }>;
-  trend: "up" | "down";
-  percentage: string;
+  info?: string;
+  trend?: "up" | "down";
+  percentage?: string;
 }
 
-const KpiCard: React.FC<KpiCardProps> = ({ title, value, icon: Icon, trend, percentage }) => {
+const KpiCard: React.FC<KpiCardProps> = ({ title, value, icon: Icon, info, trend, percentage }) => {
   return (
-    <Card className="shadow-md rounded-xl min-h-[120px]">
-      <CardContent className="p-4 flex flex-col items-center text-center">
-        <div className="flex items-center justify-center mb-2">
-          <Icon className="text-gray-600 w-5 h-5" />
-          <span className="ml-2 text-sm text-gray-500">{title}</span>
-        </div>
-        <div className="text-2xl font-semibold mb-1">{value}</div>
-        <div className={`flex items-center justify-center ${
-          trend === "up" ? "text-green-600" : "text-red-600"
-        }`}>
-          {trend === "up" ? (
-            <ArrowUp className="h-3 w-3" />
-          ) : (
-            <ArrowDown className="h-3 w-3" />
+    <Card className="shadow-sm border rounded-lg">
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs text-gray-500">{title}</span>
+          {info && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="w-4 h-4 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center text-xs cursor-help">?</div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">{info}</p>
+              </TooltipContent>
+            </Tooltip>
           )}
-          <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-            trend === "up" ? "bg-green-100" : "bg-red-100"
-          }`}>
-            {percentage}
-          </span>
         </div>
+        <div className="text-xl font-semibold">{value}</div>
+        {trend && percentage && (
+          <div className={`mt-1 flex items-center text-xs ${
+            trend === "up" ? "text-green-600" : "text-red-600"
+          }`}>
+            {trend === "up" ? (
+              <ArrowUp className="h-3 w-3" />
+            ) : (
+              <ArrowDown className="h-3 w-3" />
+            )}
+            <span className="ml-1">{percentage}</span>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

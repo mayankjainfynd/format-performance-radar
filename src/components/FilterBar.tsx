@@ -15,7 +15,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters }) => {
   const [showFilters, setShowFilters] = React.useState(!isMobile);
 
   return (
-    <div className="bg-white z-50 sticky top-0 px-6 py-4 border-b">
+    <div className="bg-white z-50 sticky top-0 px-4 md:px-6 py-4 border-b shadow-sm">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-semibold">Category Overview</h1>
         <div className="flex items-center gap-2">
@@ -46,7 +46,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters }) => {
             label="Format"
             value={filters.format}
             onChange={(value) => setFilters((prev) => ({ ...prev, format: value }))}
-            options={["All Format", "Smart Bazaar", "FreshPik", "Express", "Online"]}
+            options={["All Format", "Smart Bazaar", "FreshPik", "JioMart", "Reliance Smart"]}
           />
           <FilterDropdown
             label="Store"
@@ -97,7 +97,6 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <label className="text-xs font-medium text-gray-500 mb-1">{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -126,22 +125,13 @@ const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <label className="text-xs font-medium text-gray-500 mb-1">Date Range</label>
       <div className="flex items-center gap-2">
         <Calendar className="h-4 w-4 text-gray-400" />
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => onChange(e.target.value, endDate)}
-          className="h-[32px] rounded-md border border-input bg-background px-3 py-1 text-sm"
-        />
-        <span>to</span>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => onChange(startDate, e.target.value)}
-          className="h-[32px] rounded-md border border-input bg-background px-3 py-1 text-sm"
-        />
+        <div className="flex items-center text-sm">
+          <span>Jan 01, 2024</span>
+          <span className="mx-2">→</span>
+          <span>Dec 31, 2024</span>
+        </div>
       </div>
     </div>
   );

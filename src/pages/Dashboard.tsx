@@ -5,6 +5,7 @@ import { fetchDashboardData } from "@/services/dashboardService";
 import { Filters } from "@/types/dashboard";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import Sidebar from "@/components/Sidebar";
 import FilterBar from "@/components/FilterBar";
@@ -43,7 +44,7 @@ const Dashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-[#F9FAFB]">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
           <p>Loading dashboard data...</p>
@@ -54,7 +55,7 @@ const Dashboard: React.FC = () => {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-[#F9FAFB]">
         <div className="text-center">
           <div className="text-red-500 text-4xl mb-4">⚠️</div>
           <h1 className="text-2xl font-bold mb-2">Error Loading Dashboard</h1>
@@ -76,11 +77,21 @@ const Dashboard: React.FC = () => {
         <div className={`flex-1 transition-all duration-300 ${isMobile ? "" : mainContentClass}`}>
           <FilterBar filters={filters} setFilters={setFilters} />
           
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             <KpiCards kpis={data.data.kpis} />
             <BusinessFormatTable data={data.data.business_format_sales} />
             <BiscuitsBricksTable data={data.data.biscuits_bricks} />
             <ChartGrid charts={data.data.charts} />
+            
+            {/* Pagination Navigation (added as shown in the image) */}
+            <div className="flex justify-end items-center gap-2 my-4">
+              <button className="p-1 border rounded hover:bg-gray-100">
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button className="p-1 border rounded hover:bg-gray-100">
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
