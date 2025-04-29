@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Store, TrendingUp, CalendarRange, Package, Settings, ShoppingCart, Users, BarChart3, Home } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -22,9 +21,18 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
       } bg-sidebar min-h-screen flex flex-col fixed left-0 top-0 bottom-0 shadow-md transition-all duration-300 z-40`}
     >
       <div className="flex items-center justify-between py-4 px-4">
-        {!collapsed && (
-          <h1 className="text-xl font-semibold text-sidebar-foreground">Granary</h1>
-        )}
+        <div className="flex items-center gap-2">
+          <div className={`w-6 h-6 flex items-center justify-center ${collapsed ? "mx-auto" : ""}`}>
+            <img
+              src="/granary-logo.svg"
+              alt="Granary Logo"
+              className="w-full h-full [&_path]:stroke-sidebar-foreground [&_circle]:stroke-sidebar-foreground"
+            />
+          </div>
+          {!collapsed && (
+            <h1 className="text-xl font-semibold text-sidebar-foreground">Granary</h1>
+          )}
+        </div>
         <button
           onClick={toggleSidebar}
           className="p-1 rounded-md hover:bg-sidebar-accent text-sidebar-foreground"
