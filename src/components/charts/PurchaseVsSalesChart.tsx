@@ -1,3 +1,4 @@
+
 import React from "react";
 import { PurchaseVsSales } from "@/types/dashboard";
 import { Card } from "@/components/ui/card";
@@ -34,33 +35,25 @@ const PurchaseVsSalesChart: React.FC<PurchaseVsSalesChartProps> = ({ data }) => 
   };
 
   return (
-    <Card className="flex flex-col h-[400px]">
-      <div className="p-4 border-b">
+    <Card className="shadow-sm bg-white rounded-lg border h-full">
+      <div className="p-4 border-b flex items-center justify-between">
         <div className="flex items-center">
-          <h2 className="text-base font-medium">Format Wise Sales</h2>
+          <h2 className="text-base font-medium">Purchase vs. Sales Comparison</h2>
           <div className="h-5 w-5 rounded-full border flex items-center justify-center ml-2 text-xs text-gray-500">?</div>
         </div>
       </div>
-      <div className="flex-1 p-4">
+      <div className="p-4 h-[300px]">
         <ChartContainer config={chartConfig}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={extendedData}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis 
-                dataKey="month" 
-                axisLine={false}
-                tickLine={false}
-                dy={10}
-              />
+              <XAxis dataKey="month" />
               <YAxis 
                 tickFormatter={(value) => `${value}M`} 
-                ticks={[0, 25, 50, 75, 100]}
-                axisLine={false}
-                tickLine={false}
-                dx={-10}
+                ticks={[0, 25, 50, 75, 100, 125, 150]}
               />
               <Tooltip
                 contentStyle={{ 
@@ -70,32 +63,29 @@ const PurchaseVsSalesChart: React.FC<PurchaseVsSalesChartProps> = ({ data }) => 
                   boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                 }}
                 formatter={(value) => [`${value} Cr`, undefined]}
+                labelFormatter={(label) => {
+                  return `2 March 2022`;
+                }}
               />
               <Line
                 type="monotone"
                 dataKey="purchase_value"
                 name="Purchase"
                 stroke={chartConfig.purchase.color}
+                activeDot={{ r: 8 }}
                 strokeWidth={2}
-                dot={{ r: 3, strokeWidth: 2 }}
-                activeDot={{ r: 6 }}
+                dot={{ r: 4 }}
               />
               <Line
                 type="monotone"
                 dataKey="sales_value"
                 name="Sales"
                 stroke={chartConfig.sales.color}
+                activeDot={{ r: 8 }}
                 strokeWidth={2}
-                dot={{ r: 3, strokeWidth: 2 }}
-                activeDot={{ r: 6 }}
+                dot={{ r: 4 }}
               />
-              <Legend 
-                verticalAlign="top"
-                align="right"
-                iconType="circle"
-                iconSize={8}
-                wrapperStyle={{ paddingBottom: 20 }}
-              />
+              <Legend />
             </LineChart>
           </ResponsiveContainer>
         </ChartContainer>
