@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchDashboardData } from "@/services/dashboardService";
 import { Filters } from "@/types/dashboard";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 import Sidebar from "@/components/Sidebar";
 import FilterBar from "@/components/FilterBar";
@@ -68,20 +69,22 @@ const Dashboard: React.FC = () => {
   const mainContentClass = sidebarCollapsed ? "ml-16" : "ml-64";
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex w-full">
-      <Sidebar collapsed={sidebarCollapsed} toggleSidebar={toggleSidebar} />
-      
-      <div className={`flex-1 transition-all duration-300 ${isMobile ? "" : mainContentClass}`}>
-        <FilterBar filters={filters} setFilters={setFilters} />
+    <TooltipProvider>
+      <div className="min-h-screen bg-[#F9FAFB] flex w-full">
+        <Sidebar collapsed={sidebarCollapsed} toggleSidebar={toggleSidebar} />
         
-        <div className="p-6">
-          <KpiCards kpis={data.data.kpis} />
-          <BusinessFormatTable data={data.data.business_format_sales} />
-          <BiscuitsBricksTable data={data.data.biscuits_bricks} />
-          <ChartGrid charts={data.data.charts} />
+        <div className={`flex-1 transition-all duration-300 ${isMobile ? "" : mainContentClass}`}>
+          <FilterBar filters={filters} setFilters={setFilters} />
+          
+          <div className="p-6">
+            <KpiCards kpis={data.data.kpis} />
+            <BusinessFormatTable data={data.data.business_format_sales} />
+            <BiscuitsBricksTable data={data.data.biscuits_bricks} />
+            <ChartGrid charts={data.data.charts} />
+          </div>
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
 
