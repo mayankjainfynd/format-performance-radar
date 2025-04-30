@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDashboardData } from "@/services/dashboardService";
-import { Filters } from "@/types/dashboard";
+import { Filters, FormatWiseSales } from "@/types/dashboard";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -63,6 +63,22 @@ const Dashboard: React.FC = () => {
 
   const mainContentClass = sidebarCollapsed ? "ml-16" : "ml-64";
 
+  // Derive formatWiseSalesData from business_format_sales
+  const totalSales = data.data.business_format_sales.reduce((sum, item) => {
+    const match = item.total_sales.match(/([\d.]+)/);
+    return sum + (match ? parseFloat(match[1]) : 0);
+  }, 0);
+  const formatWiseSalesData: FormatWiseSales[] = data.data.business_format_sales.map(item => {
+    const match = item.total_sales.match(/([\d.]+)/);
+    const salesValue = match ? parseFloat(match[1]) : 0;
+    const sales_percentage = totalSales > 0 ? ((salesValue / totalSales) * 100).toFixed(1) : "0";
+    return {
+      format_name: item.format_name,
+      sales_percentage,
+      sales_value: item.total_sales
+    };
+  });
+
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-[#F9FAFB] flex w-full">
@@ -93,7 +109,7 @@ const Dashboard: React.FC = () => {
                     <KpiCards kpis={data.data.kpis} />
                     <BusinessFormatTable data={data.data.business_format_sales} />
                     <BiscuitsBricksTable data={data.data.biscuits_bricks} />
-                    <ChartGrid charts={data.data.charts} />
+                    <ChartGrid charts={data.data.charts} formatWiseSalesData={formatWiseSalesData} />
                     {/* Pagination Navigation (added as shown in the image) */}
                     <div className="flex justify-end items-center gap-2 my-4">
                       <button className="p-1 border rounded hover:bg-gray-100">

@@ -229,6 +229,43 @@ const ProductTable = () => (
   </div>
 );
 
+// Format Wise Sales Data
+export const formatWiseSalesData = [
+  { 
+    name: "Smart Bazaar", 
+    value: 20.8, 
+    salesValue: 11.50,
+    unit: "Cr"
+  },
+  { 
+    name: "FreshPik", 
+    value: 17.7, 
+    salesValue: 9.75,
+    unit: "Cr"
+  },
+  { 
+    name: "Reliance Smart", 
+    value: 16.1, 
+    salesValue: 8.90,
+    unit: "Cr"
+  },
+  { 
+    name: "JioMart", 
+    value: 14.0, 
+    salesValue: 7.75,
+    unit: "Cr"
+  },
+  { 
+    name: "JioMart Digital", 
+    value: 12.2, 
+    salesValue: 6.75,
+    unit: "Cr"
+  },
+];
+
+// Calculate total sales value
+const totalSalesValue = formatWiseSalesData.reduce((sum, item) => sum + item.salesValue, 0);
+
 const ProductsOverviewPage: React.FC = () => {
   const [filters, setFilters] = useState({
     format: "All Format",
@@ -241,9 +278,9 @@ const ProductsOverviewPage: React.FC = () => {
     }
   });
 
-  // Use the correct KPIs structure
+  // Use the calculated total sales value
   const kpis = {
-    total_sales: "₹55.23 Cr",
+    total_sales: `₹${totalSalesValue.toFixed(2)} Cr`,
     sales_quantity: "2.38 L",
     total_store: 450,
     on_hand_inventory: "1.24 L",

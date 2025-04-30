@@ -20,7 +20,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
         collapsed ? "w-16" : "w-64"
       } bg-sidebar min-h-screen flex flex-col fixed left-0 top-0 bottom-0 shadow-md transition-all duration-300 z-40`}
     >
-      <div className="flex flex-col items-center py-4 px-4">
+      <div className="flex flex-col items-center pt-4">
         <img src="/granary-logo.svg" alt="Granary" className="h-8 w-8 mb-2" />
       </div>
       <div className="flex items-center justify-between py-4 px-4">
@@ -44,7 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
         </button>
       </div>
       <div className="flex-1 overflow-y-auto">
-        <nav className="py-4">
+        <nav className="py-4 mt-[-1rem]">
           <ul className="space-y-2 px-2">
             <NavItem icon={Home} label="Home" collapsed={collapsed} />
             <NavItem icon={TrendingUp} label="Dashboard" collapsed={collapsed} active />

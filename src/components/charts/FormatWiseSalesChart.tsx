@@ -1,114 +1,76 @@
 import React from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormatWiseSales } from "@/types/dashboard";
-import { Card } from "@/components/ui/card";
-import { ChartContainer } from "@/components/ui/chart";
-import { PieChart, Pie, ResponsiveContainer, Cell, Legend, Tooltip } from "recharts";
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
 interface FormatWiseSalesChartProps {
   data: FormatWiseSales[];
 }
 
-const FormatWiseSalesChart: React.FC<FormatWiseSalesChartProps> = ({ data }) => {
-  // Extended data to match the image
-  const extendedData = [
-    { name: "Smart Bazaar", value: 20.8, salesValue: "₹11.50 Cr" },
-    { name: "FreshPik", value: 17.7, salesValue: "₹9.75 Cr" },
-    { name: "Reliance Smart", value: 16.1, salesValue: "₹8.90 Cr" },
-    { name: "JioMart", value: 14.0, salesValue: "₹7.75 Cr" },
-    { name: "JioMart Digital", value: 12.2, salesValue: "₹6.75 Cr" },
-  ];
+const parseSalesValue = (salesValue: string) => {
+  // Expects format like "₹11.50 Cr"
+  const match = salesValue.match(/([\d.]+)/);
+  return match ? parseFloat(match[1]) : 0;
+};
 
-  const COLORS = ["#4338CA", "#10B981", "#8B5CF6", "#3B82F6", "#8884d8"];
-  
-  const centerText = {
-    value: "₹55.23 Cr",
-    label: "Total"
-  };
+const FormatWiseSalesChart: React.FC<FormatWiseSalesChartProps> = ({ data }) => {
+  // Calculate total sales value from the prop
+  const totalSalesValue = data.reduce((sum, item) => sum + parseSalesValue(item.sales_value), 0);
 
   return (
-    <Card className="shadow-sm bg-white rounded-lg border h-full">
-      <div className="p-4 border-b flex items-center justify-between">
-        <div className="flex items-center">
-          <h2 className="text-base font-medium">Format Wise Sales</h2>
-          <div className="h-5 w-5 rounded-full border flex items-center justify-center ml-2 text-xs text-gray-500">?</div>
-        </div>
-      </div>
-      <div className="p-4 h-[calc(100%-4rem)]">
-        <ChartContainer config={{}}>
-          <ResponsiveContainer width="100%" height="100%" minHeight={280}>
-            <PieChart margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <Pie
-              data={extendedData}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={90}
-              fill="#8884d8"
-              dataKey="value"
-              nameKey="name"
-              paddingAngle={2}
-              label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-                const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
-                const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
-                const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
-                return (
-                    <text x={x} y={y} fill="#111827" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-sm">
-                    {`${(percent * 100).toFixed(1)}%`}
-                  </text>
-                );
-              }}
-            >
-              {extendedData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip
-              formatter={(value, name, props) => {
-                return [`${value}%`, name];
-              }}
-              contentStyle={{ 
-                backgroundColor: 'white',
-                border: '1px solid #e5e7eb',
-                borderRadius: '0.375rem',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                fontSize: '0.875rem'
-              }}
-            />
-            <Legend 
-              layout="vertical" 
-              align="right" 
-              verticalAlign="middle" 
-              formatter={(value, entry) => {
-                const item = extendedData.find(d => d.name === value);
-                return (
-                    <span className="text-sm">
-                    {value} ({item?.salesValue})
-                  </span>
-                );
-              }}
-            />
-            <text
-              x="50%"
-              y="50%"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="text-base font-bold"
-            >
-              {centerText.value}
-            </text>
-            <text
-              x="50%"
-              y="calc(50% + 20)"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="text-sm text-gray-500"
-            >
-              {centerText.label}
-            </text>
-          </PieChart>
+    <Card className="col-span-1">
+      <CardHeader>
+        <CardTitle>Format Wise Sales</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data.map(item => ({
+                  name: item.format_name,
+                  value: parseFloat(item.sales_percentage),
+                  salesValue: parseSalesValue(item.sales_value),
+                  unit: item.sales_value.replace(/.*\s/, "")
+                }))}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip
+                formatter={(_value: number, name: string, props: any) => {
+                  const item = data.find(d => d.format_name === name);
+                  return [item?.sales_value, name];
+                }}
+              />
+              <Legend
+                formatter={(value: string) => {
+                  const item = data.find(d => d.format_name === value);
+                  return `${value} (${item?.sales_value})`;
+                }}
+              />
+              <text
+                x="50%"
+                y="50%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="text-lg font-semibold"
+              >
+                ₹{totalSalesValue.toFixed(2)} Cr
+              </text>
+            </PieChart>
           </ResponsiveContainer>
-        </ChartContainer>
-      </div>
+        </div>
+      </CardContent>
     </Card>
   );
 };
