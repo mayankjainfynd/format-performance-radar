@@ -20,18 +20,20 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
         collapsed ? "w-16" : "w-64"
       } bg-sidebar min-h-screen flex flex-col fixed left-0 top-0 bottom-0 shadow-md transition-all duration-300 z-40`}
     >
+      <div className="flex flex-col items-center py-4 px-4">
+        <img src="/granary-logo.svg" alt="Granary" className="h-8 w-8 mb-2" />
+      </div>
       <div className="flex items-center justify-between py-4 px-4">
         {!collapsed ? (
           <div className="flex items-center gap-2">
-            <img src="/granary-logo.svg" alt="Granary" className="h-8 w-8" />
-            <span className="text-xl font-semibold text-white">Granary</span>
+            {/* Removed logo and text from expanded sidebar */}
           </div>
         ) : (
           <div 
             className="flex items-center justify-center w-full cursor-pointer hover:opacity-80 transition-opacity"
             onClick={toggleSidebar}
           >
-            <img src="/granary-logo.svg" alt="Granary" className="h-8 w-8" />
+            {/* Removed logo from collapsed sidebar */}
           </div>
         )}
         <button
@@ -72,14 +74,20 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, collapsed, active 
     <li>
       <a
         href="#"
-        className={`flex items-center p-2 rounded-md ${
-          active
-            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-            : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
-        } transition-colors ${collapsed ? "justify-center" : "justify-start"}`}
+        className={
+          `flex items-center p-2 rounded-md transition-colors justify-center ` +
+          (collapsed ? "flex-col " : "flex-row ") +
+          (active
+            ? "bg-sidebar-accent text-sidebar-accent-foreground "
+            : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground ")
+        }
       >
         <Icon className="w-5 h-5 min-w-5" />
-        {!collapsed && <span className="ml-3">{label}</span>}
+        {collapsed ? (
+          <span className="mt-1 text-[10px] leading-tight text-center text-sidebar-foreground/70">{label}</span>
+        ) : (
+          <span className="ml-3">{label}</span>
+        )}
       </a>
     </li>
   );

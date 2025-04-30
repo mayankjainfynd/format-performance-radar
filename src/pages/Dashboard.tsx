@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDashboardData } from "@/services/dashboardService";
 import { Filters } from "@/types/dashboard";
@@ -8,15 +7,18 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import Sidebar from "@/components/Sidebar";
+import TopBar from "@/components/TopBar";
 import FilterBar from "@/components/FilterBar";
 import KpiCards from "@/components/KpiCards";
 import BusinessFormatTable from "@/components/BusinessFormatTable";
 import BiscuitsBricksTable from "@/components/BiscuitsBricksTable";
 import ChartGrid from "@/components/ChartGrid";
+import ProductsOverviewPage from "@/components/ProductsOverviewPage";
 
 const Dashboard: React.FC = () => {
   const isMobile = useIsMobile();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(isMobile);
+  // Force sidebarCollapsed to always be true
+  const sidebarCollapsed = true;
   const [filters, setFilters] = useState<Filters>({
     format: "All Format",
     store: "All Store",
@@ -27,20 +29,12 @@ const Dashboard: React.FC = () => {
       end_date: "2024-12-31"
     }
   });
+  const [submenu, setSubmenu] = useState<'category' | 'products'>('category');
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["dashboardData", filters],
     queryFn: fetchDashboardData,
   });
-
-  // Update sidebar state when mobile state changes
-  useEffect(() => {
-    setSidebarCollapsed(isMobile);
-  }, [isMobile]);
-
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
 
   if (isLoading) {
     return (
@@ -72,25 +66,48 @@ const Dashboard: React.FC = () => {
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-[#F9FAFB] flex w-full">
-        <Sidebar collapsed={sidebarCollapsed} toggleSidebar={toggleSidebar} />
-        
-        <div className={`flex-1 transition-all duration-300 ${isMobile ? "" : mainContentClass}`}>
-          <FilterBar filters={filters} setFilters={setFilters} />
-          
-          <div className="p-4 md:p-6">
-            <KpiCards kpis={data.data.kpis} />
-            <BusinessFormatTable data={data.data.business_format_sales} />
-            <BiscuitsBricksTable data={data.data.biscuits_bricks} />
-            <ChartGrid charts={data.data.charts} />
-            
-            {/* Pagination Navigation (added as shown in the image) */}
-            <div className="flex justify-end items-center gap-2 my-4">
-              <button className="p-1 border rounded hover:bg-gray-100">
-                <ChevronLeft className="h-4 w-4" />
+        <Sidebar collapsed={sidebarCollapsed} toggleSidebar={() => {}} />
+        <div className="flex-1 flex flex-col">
+          <TopBar />
+          <div className="flex flex-1">
+            {/* Submenu beside sidebar, below TopBar */}
+            <div className="flex flex-col w-48 bg-[#F9FAFB] border-r border-gray-200 py-6 px-2 h-full ml-16">
+              <button
+                className={`flex items-center gap-2 px-4 py-2 rounded-md mb-2 text-left text-sm font-medium transition-colors ${submenu === 'category' ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100 text-gray-700'}`}
+                onClick={() => setSubmenu('category')}
+              >
+                Category Overview
               </button>
-              <button className="p-1 border rounded hover:bg-gray-100">
-                <ChevronRight className="h-4 w-4" />
+              <button
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-left text-sm font-medium transition-colors ${submenu === 'products' ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100 text-gray-700'}`}
+                onClick={() => setSubmenu('products')}
+              >
+                Products Overview
               </button>
+            </div>
+            <div className={`flex-1 transition-all duration-300`}> 
+              {submenu === 'category' ? (
+                <>
+                  <FilterBar filters={filters} setFilters={setFilters} />
+                  <div className="p-4 md:p-6">
+                    <KpiCards kpis={data.data.kpis} />
+                    <BusinessFormatTable data={data.data.business_format_sales} />
+                    <BiscuitsBricksTable data={data.data.biscuits_bricks} />
+                    <ChartGrid charts={data.data.charts} />
+                    {/* Pagination Navigation (added as shown in the image) */}
+                    <div className="flex justify-end items-center gap-2 my-4">
+                      <button className="p-1 border rounded hover:bg-gray-100">
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <button className="p-1 border rounded hover:bg-gray-100">
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <ProductsOverviewPage />
+              )}
             </div>
           </div>
         </div>
