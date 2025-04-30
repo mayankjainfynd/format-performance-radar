@@ -1,4 +1,3 @@
-
 import React from "react";
 import { TargetVsSales } from "@/types/dashboard";
 import { Card } from "@/components/ui/card";
@@ -39,12 +38,12 @@ const TargetVsSalesChart: React.FC<TargetVsSalesChartProps> = ({ data }) => {
           <div className="h-5 w-5 rounded-full border flex items-center justify-center ml-2 text-xs text-gray-500">?</div>
         </div>
       </div>
-      <div className="p-4 h-[300px]">
+      <div className="p-4">
         <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={280}>
             <LineChart
               data={extendedData}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="month" />
