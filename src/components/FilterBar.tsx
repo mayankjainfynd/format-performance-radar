@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Filters } from "@/types/dashboard";
 import { Filter, Search, Calendar } from "lucide-react";
@@ -8,16 +7,17 @@ import { useIsMobile } from "@/hooks/use-mobile";
 interface FilterBarProps {
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  title?: string;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters }) => {
+const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters, title = "Category Overview" }) => {
   const isMobile = useIsMobile();
   const [showFilters, setShowFilters] = React.useState(!isMobile);
 
   return (
     <div className="bg-white z-50 sticky top-0 px-4 md:px-6 py-4 border-b shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">Category Overview</h1>
+        <h1 className="text-xl font-semibold">{title}</h1>
         <div className="flex items-center gap-2">
           {isMobile && (
             <Button

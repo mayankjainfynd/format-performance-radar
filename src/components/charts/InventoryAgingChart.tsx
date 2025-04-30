@@ -43,45 +43,45 @@ const InventoryAgingChart: React.FC<InventoryAgingChartProps> = ({ data }) => {
           </TabsList>
         </Tabs>
       </div>
-      <div className="flex-1 p-4 min-h-0">
-          <ChartContainer config={{}}>
+      <div className="p-4 h-[calc(100%-4rem)]">
+        <ChartContainer config={{}}>
           <ResponsiveContainer width="100%" height="100%" minHeight={280}>
-              <BarChart
-                data={chartData}
+            <BarChart
+              data={chartData}
               margin={{ top: 10, right: 10, left: 0, bottom: 30 }}
               barCategoryGap={30}
-                barGap={0}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis 
-                  tickFormatter={(value) => `${value}k`}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  contentStyle={{ 
-                    backgroundColor: 'white',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '0.375rem',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                  }}
-                  formatter={(value) => [`${value}`, "Quantity"]}
-                />
-                <Bar 
-                  dataKey="value" 
-                  name="Inventory Units" 
-                  radius={[4, 4, 0, 0]} 
-                  fill="#3B82F6"
-                  shape={<CustomBar />}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+              barGap={0}
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis 
+                dataKey="name" 
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis 
+                tickFormatter={(value) => `${value}k`}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                contentStyle={{ 
+                  backgroundColor: 'white',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.375rem',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                }}
+                formatter={(value) => [`${value}`, "Quantity"]}
+              />
+              <Bar 
+                dataKey="value" 
+                name="Inventory Units" 
+                radius={[4, 4, 0, 0]} 
+                fill="#3B82F6"
+                shape={<CustomBar />}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartContainer>
       </div>
     </Card>
   );

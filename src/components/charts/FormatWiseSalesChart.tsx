@@ -33,7 +33,7 @@ const FormatWiseSalesChart: React.FC<FormatWiseSalesChartProps> = ({ data }) => 
           <div className="h-5 w-5 rounded-full border flex items-center justify-center ml-2 text-xs text-gray-500">?</div>
         </div>
       </div>
-      <div className="flex-1 p-4 min-h-0 relative">
+      <div className="p-4 h-[calc(100%-4rem)]">
         <ChartContainer config={{}}>
           <ResponsiveContainer width="100%" height="100%" minHeight={280}>
             <PieChart margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -41,8 +41,8 @@ const FormatWiseSalesChart: React.FC<FormatWiseSalesChartProps> = ({ data }) => 
               data={extendedData}
               cx="50%"
               cy="50%"
-                innerRadius={60}
-                outerRadius={90}
+              innerRadius={60}
+              outerRadius={90}
               fill="#8884d8"
               dataKey="value"
               nameKey="name"
@@ -70,8 +70,8 @@ const FormatWiseSalesChart: React.FC<FormatWiseSalesChartProps> = ({ data }) => 
                 backgroundColor: 'white',
                 border: '1px solid #e5e7eb',
                 borderRadius: '0.375rem',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                  fontSize: '0.875rem'
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                fontSize: '0.875rem'
               }}
             />
             <Legend 
@@ -87,13 +87,27 @@ const FormatWiseSalesChart: React.FC<FormatWiseSalesChartProps> = ({ data }) => 
                 );
               }}
             />
+            <text
+              x="50%"
+              y="50%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="text-base font-bold"
+            >
+              {centerText.value}
+            </text>
+            <text
+              x="50%"
+              y="calc(50% + 20)"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="text-sm text-gray-500"
+            >
+              {centerText.label}
+            </text>
           </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
-        <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[calc(180%)] text-center">
-          <div className="text-base font-bold">{centerText.value}</div>
-          <div className="text-sm text-gray-500">{centerText.label}</div>
-        </div>
       </div>
     </Card>
   );

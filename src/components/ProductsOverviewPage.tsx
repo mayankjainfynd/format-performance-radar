@@ -39,12 +39,12 @@ const ClassificationMatrix = () => {
         <h2 className="text-base font-semibold">Classification Matrix</h2>
         <span className="h-5 w-5 rounded-full border flex items-center justify-center text-xs text-gray-500 cursor-pointer" title="This matrix classifies SKUs by revenue and demand stability.">?</span>
       </div>
-      <div className="p-4 pt-6 flex flex-col items-center relative">
+      <div className="p-4 pt-6 flex flex-col items-center relative h-[calc(100%-4rem)]">
         {/* Axis labels */}
         <span className="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-gray-500 select-none">Revenue</span>
         <span className="absolute right-4 top-2 text-xs text-gray-500 select-none">Demand Stability</span>
         {/* Matrix grid */}
-        <div className="grid grid-cols-3 grid-rows-3 gap-3 w-full">
+        <div className="grid grid-cols-3 grid-rows-3 gap-3 w-full h-full">
           {classificationMatrixData.map((row, i) =>
             row.map((cell, j) => (
               <div
@@ -115,7 +115,7 @@ const MarginVsVolumeQuadrant = () => (
     </div>
     <div className="p-4 h-[calc(100%-4rem)]">
       <ChartContainer config={{}}>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" minHeight={280}>
           <ScatterChart margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
@@ -251,15 +251,16 @@ const ProductsOverviewPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4 md:p-6">
-      <h1 className="text-2xl font-bold mb-4">Products</h1>
-      <FilterBar filters={filters} setFilters={setFilters} />
-      <KpiCards kpis={kpis} />
-      <div className="flex gap-4 mt-6 flex-wrap">
-        <ClassificationMatrix />
-        <MarginVsVolumeQuadrant />
+    <div>
+      <FilterBar filters={filters} setFilters={setFilters} title="Products Overview" />
+      <div className="p-4 md:p-6">
+        <KpiCards kpis={kpis} />
+        <div className="flex gap-4 mt-6 flex-wrap">
+          <ClassificationMatrix />
+          <MarginVsVolumeQuadrant />
+        </div>
+        <ProductTable />
       </div>
-      <ProductTable />
     </div>
   );
 };

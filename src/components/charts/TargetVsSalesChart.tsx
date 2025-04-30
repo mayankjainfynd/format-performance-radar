@@ -38,9 +38,9 @@ const TargetVsSalesChart: React.FC<TargetVsSalesChartProps> = ({ data }) => {
           <div className="h-5 w-5 rounded-full border flex items-center justify-center ml-2 text-xs text-gray-500">?</div>
         </div>
       </div>
-      <div className="p-4">
+      <div className="p-4 h-[calc(100%-4rem)]">
         <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height={280}>
+          <ResponsiveContainer width="100%" height="100%" minHeight={280}>
             <LineChart
               data={extendedData}
               margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
